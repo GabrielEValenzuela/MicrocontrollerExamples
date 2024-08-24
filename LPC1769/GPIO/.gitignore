@@ -54,3 +54,4 @@ dkms.conf
 /Debug/
 /Release/
 /.vscode/
+formatter.sh

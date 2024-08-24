@@ -14,8 +14,9 @@ The LPC1769 is a powerful ARM Cortex-M3 based microcontroller developed by NXP. 
 
 ## 📚 Projects
 
-| 📂 Project Name | 📝 Description |
-| --------------- | -------------- |
+| 📂 Project Name | 📝 Description                                                                                                       |
+| --------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [GPIO](GPIO)    | Provides an introduction to GPIO operations, such as configuring pin modes, reading inputs, and controlling outputs. |
 
 Each project is designed to showcase a specific feature or peripheral of the LPC1769, providing hands-on experience in embedded systems development.
 
