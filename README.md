@@ -7,7 +7,17 @@ This repository contains a collection of examples and tutorials for working with
 ## 📁 Repository Structure
 
 - **LPC1769/**: Contains examples specific to the LPC1769 microcontroller. Each subfolder represents a module.
-- **STM32/**: Contains examples for the STM32 microcontroller. Each subfolder represents a module.
+- **STM32/**: Contains examples for the STM32F103C8T6 microcontroller. Each subfolder represents a module.
+
+## 📦 Libraries and Frameworks
+
+### 📚 CMSIS (Cortex Microcontroller Software Interface Standard)
+
+CMSIS is a vendor-independent hardware abstraction layer for the Cortex-M processor series. It provides a standardized API for peripheral access, system initialization, and more. In this repository, CMSIS is used along with CMSIS drivers for the LPC1769 microcontroller to facilitate low-level programming and hardware abstraction.
+
+### 📚 libopencm3
+
+libopencm3 is an open-source library that provides a unified API for a variety of ARM Cortex-M microcontrollers, including the STM32 series. It abstracts the hardware-specific details, making it easier to write portable and maintainable code. In this repository, libopencm3 is used for the STM32F103C8T6 microcontroller to manage peripheral interactions, system initialization, and more.
 
 ## 🔧 Considerations and Prerequisites
 
@@ -20,7 +30,7 @@ Before compiling these projects, ensure you have the following:
 
 For installation instructions, please check the [INSTALL](INSTALL) file in the repository.
 
-> ⚠️ **Important:**  
+> [!CAUTION]
 > For LPC1769 projects, we utilize `bare metal` programming. This means we develop a minimal bootloader to initialize the clock, memory, and processor before proceeding to the main program.  
 > To make it work with MCUExpresso, please copy the source files and header files from the `src` and `include` directories to your projects, except for `newlib_stubs.c`.
 
