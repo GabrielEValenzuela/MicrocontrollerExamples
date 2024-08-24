@@ -15,8 +15,9 @@ The STM32F103C8T6, part of the STM32F1 series by STMicroelectronics, is a popula
 
 ## 📚 Projects
 
-| 📂 Project Name | 📝 Description |
-| --------------- | -------------- |
+| 📂 Project Name | 📝 Description                                                                                                       |
+| --------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [GPIO](GPIO)    | Provides an introduction to GPIO operations, such as configuring pin modes, reading inputs, and controlling outputs. |
 
 These projects are designed to provide practical examples of working with the STM32F103C8T6 microcontroller, giving you the opportunity to explore and understand its different peripherals and features.
 
