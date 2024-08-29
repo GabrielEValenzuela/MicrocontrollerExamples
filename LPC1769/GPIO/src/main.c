@@ -88,7 +88,7 @@ int main(void)
 {
     SystemInit(); /* Initialize the system clock (default: 100 MHz) */
 
-    configure_pins(); /* Configure GPIO pins */
+    configure_port(); /* Configure GPIO pins */
 
     while (TRUE)
     {
