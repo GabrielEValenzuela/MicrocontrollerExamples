@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "lpc17xx_systick.h": "c",
-        "lpc17xx_gpio.h": "c"
-    }
-}
