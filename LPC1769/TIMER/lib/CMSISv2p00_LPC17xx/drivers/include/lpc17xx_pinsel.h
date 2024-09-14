@@ -65,10 +65,10 @@ extern "C"
 /***********************************************************************
  * Macros define for Pin Function selection
  **********************************************************************/
-#define PINSEL_FUNC_0 ((0)) /**< default function 00 */
-#define PINSEL_FUNC_1 ((1)) /**< first alternate function 01 */
-#define PINSEL_FUNC_2 ((2)) /**< second alternate function 10 */
-#define PINSEL_FUNC_3 ((3)) /**< third or reserved alternate function 11 */
+#define PINSEL_FUNC_0 ((0)) /**< default function*/
+#define PINSEL_FUNC_1 ((1)) /**< first alternate function*/
+#define PINSEL_FUNC_2 ((2)) /**< second alternate function*/
+#define PINSEL_FUNC_3 ((3)) /**< third or reserved alternate function*/
 
 /***********************************************************************
  * Macros define for Pin Number of Port
