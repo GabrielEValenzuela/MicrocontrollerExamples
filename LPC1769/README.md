@@ -14,7 +14,7 @@ The LPC1769 is a powerful ARM Cortex-M3 based microcontroller developed by NXP. 
 
 ## 📚 Projects
 
-| 📂 Project Name     | 📝 Description                                                                                                                         |
+| 📂 Project Name    | 📝 Description                                                                                                                           |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | [GPIO](GPIO)       | Provides an introduction to GPIO operations, such as configuring pin modes, reading inputs, and controlling outputs.                     |
 | [SYSTICK](SYSTICK) | Covers topics such as configuring the SysTick timer, setting up interrupts, and using the timer for precise timing and delay operations. |
@@ -22,6 +22,7 @@ The LPC1769 is a powerful ARM Cortex-M3 based microcontroller developed by NXP. 
 | [EINT](EINT)       | This project demonstrates how to utilize the external interrupt capabilities of the LPC1769                                              |
 | [TIMER](TIMER)     | This project demonstrates how to configure and use the timer peripherals of the LPC1769 for various timing and counting applications.    |
 | [ADC](ADC)         | This project demonstrates how to configure and use the Analog-to-Digital Converter (ADC) of the LPC1769.                                 |
+| [DMA](DMA)         | This project demonstrates how to configure and use the Direct Memory Access (DMA) controller of the LPC1769 for efficient data transfer. |
 
 Each project is designed to showcase a specific feature or peripheral of the LPC1769, providing hands-on experience in embedded systems development.
 
