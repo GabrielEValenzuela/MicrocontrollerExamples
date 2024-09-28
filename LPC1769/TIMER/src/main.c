@@ -1,35 +1,37 @@
 /*
  * @file main.c
  * @brief Timer0 Example
- * 
- * The timer resolution determines how finely we can control the timing. For the LPC1769, with a clock of 100 MHz and a prescaler, the timer resolution is calculated as:
- * 
+ *
+ * The timer resolution determines how finely we can control the timing. For the LPC1769, with a clock of 100 MHz and a
+ * prescaler, the timer resolution is calculated as:
+ *
  * Timer Resolution = (Prescaler + 1) / PCLK
- * 
+ *
  * With a clock of 100 MHz and a prescaler of 0, the timer resolution is:
- * 
+ *
  * Timer Resolution = (0 + 1) / 100 MHz = 10 ns
- * 
+ *
  * If you set the prescaler to 100, the clock period becomes:
- * 
+ *
  * Timer Resolution = (100 + 1) / 100 MHz = 1.01 µs
- * 
- * The maximum time the timer can count before overflowing depends on the timer's resolution and the maximum 32-bit count. Using the formula:
- * 
+ *
+ * The maximum time the timer can count before overflowing depends on the timer's resolution and the maximum 32-bit
+ * count. Using the formula:
+ *
  * Maximum Time = Timer Resolution * 2^32
- * 
+ *
  * The maximum time the timer can count before overflowing is:
- * 
+ *
  * Maximum Time = 10 ns * 2^32 = 429.4967296 s
- * 
+ *
  * Which is approximately 429.5 seconds or 7 minutes and 9.5 seconds.
- * 
+ *
  * With a prescaler of 100, the maximum time the timer can count before overflowing is:
- * 
+ *
  * Maximum Time = 1.01 µs * 2^32 = 71.58 minutes
- * 
+ *
  * Which is approximately 1 hour and 11 minutes.
- * 
+ *
  * In this example, we will configure Timer0 to toggle four LEDs at different frequencies.
  */
 
@@ -41,9 +43,9 @@
 #include <cr_section_macros.h> /* MCUXpresso-specific macros */
 #endif
 
-#include "lpc17xx_timer.h"    /* Timer0 */
-#include "lpc17xx_gpio.h"    /* GPIO */
-#include "lpc17xx_pinsel.h"    /* Pin Configuration */
+#include "lpc17xx_gpio.h"   /* GPIO */
+#include "lpc17xx_pinsel.h" /* Pin Configuration */
+#include "lpc17xx_timer.h"  /* Timer0 */
 
 /* Pin Definitions */
 #define LED0 ((uint32_t)(1 << 20)) // P0.20
@@ -51,24 +53,29 @@
 #define LED2 ((uint32_t)(1 << 22)) // P0.22
 #define LED3 ((uint32_t)(1 << 23)) // P0.23
 
-#define FREQ_LED0 2  // LED0 frequency in Hz
-#define FREQ_LED1 1  // LED1 frequency in Hz
+#define FREQ_LED0 2    // LED0 frequency in Hz
+#define FREQ_LED1 1    // LED1 frequency in Hz
 #define FREQ_LED2 0.5  // LED2 frequency in Hz
 #define FREQ_LED3 0.25 // LED3 frequency in Hz
 
-#define HALF_PERIOD 500000 // Half period for toggle, the number 500000 was derived from the assumption of dividing the timer clock by 2
+#define HALF_PERIOD                                                                                                    \
+    500000 // Half period for toggle, the number 500000 was derived from the assumption of dividing the timer clock by 2
+
+#define OUTPUT 1 // GPIO direction for output
 
 /* Prototype Functions */
 void configure_timer_and_match(void);
 void configure_port(void);
 
-void configure_timer_and_match(void) {
+void configure_timer_and_match(void)
+{
     TIM_TIMERCFG_Type timer_cfg_struct;
     TIM_MATCHCFG_Type match_cfg_struct;
 
     // Configure Timer0 in microsecond mode with a prescaler
     timer_cfg_struct.PrescaleOption = TIM_PRESCALE_USVAL; // Prescaler in microseconds
-    timer_cfg_struct.PrescaleValue = 100;  // Prescaler for 100 MHz clock -> 1 µs resolution. Every 100us the timer will increment by 1
+    timer_cfg_struct.PrescaleValue =
+        100; // Prescaler for 100 MHz clock -> 1 µs resolution. Every 100us the timer will increment by 1
     TIM_Init(LPC_TIM0, TIM_TIMER_MODE, &timer_cfg_struct);
 
     // Configure match channel for LED0 (2 Hz toggle rate)
@@ -121,36 +128,43 @@ void configure_port(void)
     GPIO_SetDir(PINSEL_PORT_0, LED0 | LED1 | LED2 | LED3, OUTPUT);
 }
 
-void TIMER0_IRQHandler(void) {
+void TIMER0_IRQHandler(void)
+{
     // Check and clear match interrupt for each channel
 
-    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR0_INT)) {
+    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR0_INT))
+    {
         TIM_ClearIntPending(LPC_TIM0, TIM_MR0_INT);
         GPIO_SetValue(PINSEL_PORT_0, LED0); // Toggle LED0
     }
-    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR1_INT)) {
+    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR1_INT))
+    {
         TIM_ClearIntPending(LPC_TIM0, TIM_MR1_INT);
         GPIO_SetValue(PINSEL_PORT_0, LED1); // Toggle LED1
     }
-    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR2_INT)) {
+    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR2_INT))
+    {
         TIM_ClearIntPending(LPC_TIM0, TIM_MR2_INT);
         GPIO_SetValue(PINSEL_PORT_0, LED2); // Toggle LED2
     }
-    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR3_INT)) {
+    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR3_INT))
+    {
         TIM_ClearIntPending(LPC_TIM0, TIM_MR3_INT);
         GPIO_SetValue(PINSEL_PORT_0, LED3); // Toggle LED3
     }
 }
 
-int main(void) {
+int main(void)
+{
     SystemInit(); // Initialize system clock
 
-    configure_port(); // Configure GPIO
+    configure_port();            // Configure GPIO
     configure_timer_and_match(); // Configure timer and match channels
 
     start_timer(); // Start timer
 
-    while (TRUE) {
+    while (TRUE)
+    {
         // Infinite loop
     }
 
