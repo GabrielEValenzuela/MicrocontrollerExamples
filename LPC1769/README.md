@@ -21,6 +21,7 @@ The LPC1769 is a powerful ARM Cortex-M3 based microcontroller developed by NXP. 
 | [INT](INT)         | This project demonstrates how to utilize the interrupt capabilities of the LPC1769 microcontroller and priority.                         |
 | [EINT](EINT)       | This project demonstrates how to utilize the external interrupt capabilities of the LPC1769                                              |
 | [TIMER](TIMER)     | This project demonstrates how to configure and use the timer peripherals of the LPC1769 for various timing and counting applications.    |
+| [CAP](CAP)         | This project demonstrates how to configure and use the timer peripherals of the LPC1769 for event capture.                               |
 | [ADC](ADC)         | This project demonstrates how to configure and use the Analog-to-Digital Converter (ADC) of the LPC1769.                                 |
 | [DMA](DMA)         | This project demonstrates how to configure and use the Direct Memory Access (DMA) controller of the LPC1769 for efficient data transfer. |
 
