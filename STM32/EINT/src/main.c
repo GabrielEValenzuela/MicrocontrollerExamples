@@ -13,22 +13,21 @@
 #include <libopencm3/stm32/rcc.h>
 
 /* Constants */
-#define TRUE         1
-#define FALLING      0
-#define RISING       1
+#define TRUE    1
+#define FALLING 0
+#define RISING  1
 
 /* Pin Definitions */
 #define LED_PORT    GPIOC
-#define LED_PIN     GPIO13  /* PC13 connected to onboard LED */
+#define LED_PIN     GPIO13 /* PC13 connected to onboard LED */
 #define SWITCH_PORT GPIOA
-#define SWITCH_PIN  GPIO0   /* PA0 connected to button (switch) */
+#define SWITCH_PIN  GPIO0 /* PA0 connected to button (switch) */
 
 /* Define SysTick interval (in milliseconds) */
 #define SYSTICK_INTERVAL_MS 100
 
 /* EXTI state direction (falling or rising edge detection) */
 static uint16_t exti_direction = FALLING;
-
 
 /* Function Prototypes */
 void system_clock_setup(void);
@@ -90,9 +89,9 @@ void exti_setup(void)
     nvic_enable_irq(NVIC_EXTI0_IRQ);
 
     /* Configure EXTI0 (PA0) for falling edge initially */
-    exti_select_source(EXTI0, SWITCH_PORT);          /* Set PA0 as the EXTI0 source */
-    exti_set_trigger(EXTI0, EXTI_TRIGGER_FALLING);   /* Trigger interrupt on falling edge */
-    exti_enable_request(EXTI0);                      /* Enable EXTI0 interrupt */
+    exti_select_source(EXTI0, SWITCH_PORT);        /* Set PA0 as the EXTI0 source */
+    exti_set_trigger(EXTI0, EXTI_TRIGGER_FALLING); /* Trigger interrupt on falling edge */
+    exti_enable_request(EXTI0);                    /* Enable EXTI0 interrupt */
 }
 
 /**
@@ -116,14 +115,14 @@ void exti0_isr(void)
     /* Toggle the LED and switch EXTI edge detection */
     if (exti_direction == FALLING)
     {
-        gpio_set(LED_PORT, LED_PIN);         /* Turn on LED on falling edge */
-        exti_direction = RISING;             /* Switch to rising edge detection */
+        gpio_set(LED_PORT, LED_PIN); /* Turn on LED on falling edge */
+        exti_direction = RISING;     /* Switch to rising edge detection */
         exti_set_trigger(EXTI0, EXTI_TRIGGER_RISING);
     }
     else
     {
-        gpio_clear(LED_PORT, LED_PIN);       /* Turn off LED on rising edge */
-        exti_direction = FALLING;            /* Switch to falling edge detection */
+        gpio_clear(LED_PORT, LED_PIN); /* Turn off LED on rising edge */
+        exti_direction = FALLING;      /* Switch to falling edge detection */
         exti_set_trigger(EXTI0, EXTI_TRIGGER_FALLING);
     }
 }
@@ -142,15 +141,14 @@ void toggle_led(void)
  */
 int main(void)
 {
-    system_clock_setup();   /* Configure system clock */
-    gpio_setup();           /* Configure GPIO pins */
-    systick_setup();         /* Configure SysTick timer */
-    exti_setup();            /* Configure EXTI for button press detection */
+    system_clock_setup(); /* Configure system clock */
+    gpio_setup();         /* Configure GPIO pins */
+    systick_setup();      /* Configure SysTick timer */
+    exti_setup();         /* Configure EXTI for button press detection */
 
     /* Main loop (the program relies on interrupts for operation) */
     while (TRUE)
     {
-        __wfi(); /* Wait for interrupt */
     }
 
     return 0;

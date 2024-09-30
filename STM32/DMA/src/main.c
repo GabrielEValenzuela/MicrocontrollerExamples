@@ -13,28 +13,31 @@
  * The temperature sensor is connected to ADC1 (PA1).
  */
 
-#include <libopencm3/stm32/rcc.h>
-#include <libopencm3/stm32/gpio.h>
+#include <libopencm3/cm3/nvic.h>
 #include <libopencm3/stm32/adc.h>
-#include <libopencm3/stm32/timer.h>
 #include <libopencm3/stm32/dma.h>
+#include <libopencm3/stm32/gpio.h>
+#include <libopencm3/stm32/rcc.h>
+#include <libopencm3/stm32/timer.h>
 
 /* Constants */
-#define GREEN_LED_PORT GPIOA
-#define GREEN_LED_PIN  GPIO8  /* PA8 (Green LED) */
-#define YELLOW_LED_PORT GPIOC
-#define YELLOW_LED_PIN  GPIO15 /* PC15 (Yellow LED) */
-#define RED_LED_PORT GPIOC
-#define RED_LED_PIN GPIO14 /* PC14 (Red LED) */
-#define ADC_CHANNEL_TEMP_SENSOR ADC_CHANNEL1  /* PA1 ADC1 */
+#define GREEN_LED_PORT          GPIOA
+#define GREEN_LED_PIN           GPIO8 /* PA8 (Green LED) */
+#define YELLOW_LED_PORT         GPIOC
+#define YELLOW_LED_PIN          GPIO15 /* PC15 (Yellow LED) */
+#define RED_LED_PORT            GPIOC
+#define RED_LED_PIN             GPIO14       /* PC14 (Red LED) */
+#define ADC_CHANNEL_TEMP_SENSOR ADC_CHANNEL1 /* PA1 ADC1 */
 
-#define TEMP_GREEN_THRESHOLD 40  /* 40 degrees */
+#define TEMP_GREEN_THRESHOLD  40 /* 40 degrees */
 #define TEMP_YELLOW_THRESHOLD 70 /* 70 degrees */
 
-#define ADC_BUFFER_SIZE 16  /* Buffer size for averaging */
+#define ADC_BUFFER_SIZE 16 /* Buffer size for averaging */
+
+#define TRUE 1
 
 /* Global Variables */
-uint16_t adc_buffer[ADC_BUFFER_SIZE];  // Buffer to store ADC values
+uint16_t adc_buffer[ADC_BUFFER_SIZE]; // Buffer to store ADC values
 
 /* Function Prototypes */
 void system_clock_setup(void);
@@ -43,6 +46,7 @@ void adc_setup(void);
 void timer2_setup(void);
 void dma_setup(void);
 void control_leds_based_on_temp(uint16_t temp);
+uint16_t average_adc_value(void);
 
 /**
  * @brief Configures the system clock to 72 MHz using an 8 MHz external crystal.
@@ -99,16 +103,18 @@ void timer2_setup(void)
     /* Enable Timer 2 clock */
     rcc_periph_clock_enable(RCC_TIM2);
 
-    /* Reset Timer 2 peripheral */
-    timer_reset(TIM2);
+    /* Enable TIM2 interrupt. */
+    nvic_enable_irq(NVIC_TIM2_IRQ);
+
+    /* Reset TIM2 peripheral to defaults. */
+    rcc_periph_reset_pulse(RST_TIM2);
 
     /* Set timer prescaler for 1Hz (1 tick per second) */
-    timer_set_prescaler(TIM2, 7200 - 1);  // 72 MHz / 7200 = 10 kHz
-    timer_set_period(TIM2, 60000 - 1);    // 10 kHz / 60000 = 1Hz (every 60 seconds)
+    timer_set_prescaler(TIM2, 7200 - 1); // 72 MHz / 7200 = 10 kHz
+    timer_set_period(TIM2, 60000 - 1);   // 10 kHz / 60000 = 1Hz (every 60 seconds)
 
     /* Enable Timer 2 interrupt for periodic triggering */
     timer_enable_irq(TIM2, TIM_DIER_UIE);
-    nvic_enable_irq(NVIC_TIM2_IRQ);
 
     /* Start the timer */
     timer_enable_counter(TIM2);
@@ -123,17 +129,17 @@ void dma_setup(void)
     rcc_periph_clock_enable(RCC_DMA1);
 
     /* Reset DMA1 stream */
-    dma_stream_reset(DMA1, DMA_CHANNEL1);
+    dma_channel_reset(DMA1, DMA_CHANNEL1);
 
     /* Set DMA configuration */
     dma_set_peripheral_address(DMA1, DMA_CHANNEL1, (uint32_t)&ADC_DR(ADC1)); /* ADC data register */
     dma_set_memory_address(DMA1, DMA_CHANNEL1, (uint32_t)adc_buffer);        /* Memory buffer */
     dma_set_number_of_data(DMA1, DMA_CHANNEL1, ADC_BUFFER_SIZE);             /* Number of data items */
     dma_set_priority(DMA1, DMA_CHANNEL1, DMA_CCR_PL_LOW);
-    dma_set_memory_size(DMA1, DMA_CHANNEL1, DMA_CCR_MSIZE_16BIT);  /* Memory size: 16 bits */
-    dma_set_peripheral_size(DMA1, DMA_CHANNEL1, DMA_CCR_PSIZE_16BIT);  /* Peripheral size: 16 bits */
+    dma_set_memory_size(DMA1, DMA_CHANNEL1, DMA_CCR_MSIZE_16BIT);     /* Memory size: 16 bits */
+    dma_set_peripheral_size(DMA1, DMA_CHANNEL1, DMA_CCR_PSIZE_16BIT); /* Peripheral size: 16 bits */
     dma_enable_memory_increment_mode(DMA1, DMA_CHANNEL1);
-    dma_enable_circular_mode(DMA1, DMA_CHANNEL1);  /* Enable circular mode */
+    dma_enable_circular_mode(DMA1, DMA_CHANNEL1); /* Enable circular mode */
 
     /* Start DMA transfer */
     dma_enable_channel(DMA1, DMA_CHANNEL1);
@@ -149,7 +155,8 @@ void dma_setup(void)
 uint16_t average_adc_value(void)
 {
     uint32_t sum = 0;
-    for (int i = 0; i < ADC_BUFFER_SIZE; i++) {
+    for (int i = 0; i < ADC_BUFFER_SIZE; i++)
+    {
         sum += adc_buffer[i];
     }
     return (uint16_t)(sum / ADC_BUFFER_SIZE);
@@ -161,26 +168,26 @@ uint16_t average_adc_value(void)
  */
 void control_leds_based_on_temp(uint16_t temp)
 {
-    uint16_t temperature = (temp * 3.3 / 4096.0) * 100;  // Convert ADC value to temperature
+    uint16_t temperature = (temp * 3.3 / 4096.0) * 100; // Convert ADC value to temperature
 
     /* Control LEDs based on temperature range */
     if (temperature < TEMP_GREEN_THRESHOLD)
     {
-        gpio_set(GREEN_LED_PORT, GREEN_LED_PIN);    /* Green LED on */
-        gpio_clear(YELLOW_LED_PORT, YELLOW_LED_PIN);/* Yellow LED off */
-        gpio_clear(RED_LED_PORT, RED_LED_PIN);      /* Red LED off */
+        gpio_set(GREEN_LED_PORT, GREEN_LED_PIN);     /* Green LED on */
+        gpio_clear(YELLOW_LED_PORT, YELLOW_LED_PIN); /* Yellow LED off */
+        gpio_clear(RED_LED_PORT, RED_LED_PIN);       /* Red LED off */
     }
     else if (temperature < TEMP_YELLOW_THRESHOLD)
     {
-        gpio_clear(GREEN_LED_PORT, GREEN_LED_PIN);  /* Green LED off */
-        gpio_set(YELLOW_LED_PORT, YELLOW_LED_PIN);  /* Yellow LED on */
-        gpio_clear(RED_LED_PORT, RED_LED_PIN);      /* Red LED off */
+        gpio_clear(GREEN_LED_PORT, GREEN_LED_PIN); /* Green LED off */
+        gpio_set(YELLOW_LED_PORT, YELLOW_LED_PIN); /* Yellow LED on */
+        gpio_clear(RED_LED_PORT, RED_LED_PIN);     /* Red LED off */
     }
     else
     {
-        gpio_clear(GREEN_LED_PORT, GREEN_LED_PIN);  /* Green LED off */
-        gpio_clear(YELLOW_LED_PORT, YELLOW_LED_PIN);/* Yellow LED off */
-        gpio_set(RED_LED_PORT, RED_LED_PIN);        /* Red LED on */
+        gpio_clear(GREEN_LED_PORT, GREEN_LED_PIN);   /* Green LED off */
+        gpio_clear(YELLOW_LED_PORT, YELLOW_LED_PIN); /* Yellow LED off */
+        gpio_set(RED_LED_PORT, RED_LED_PIN);         /* Red LED on */
     }
 }
 
@@ -192,10 +199,10 @@ void tim2_isr(void)
 {
     if (timer_get_flag(TIM2, TIM_SR_UIF))
     {
-        timer_clear_flag(TIM2, TIM_SR_UIF);  // Clear update interrupt flag
+        timer_clear_flag(TIM2, TIM_SR_UIF); // Clear update interrupt flag
 
-        uint16_t averaged_value = average_adc_value();  // Compute average ADC value
-        control_leds_based_on_temp(averaged_value);     // Control LEDs based on temperature
+        uint16_t averaged_value = average_adc_value(); // Compute average ADC value
+        control_leds_based_on_temp(averaged_value);    // Control LEDs based on temperature
     }
 }
 
@@ -205,15 +212,14 @@ void tim2_isr(void)
  */
 int main(void)
 {
-    system_clock_setup();  /* Set up system clock */
-    gpio_setup();          /* Configure GPIO pins */
-    adc_setup();           /* Configure ADC1 */
-    dma_setup();           /* Set up DMA for ADC */
-    timer2_setup();        /* Configure Timer2 for periodic ADC conversion */
+    system_clock_setup(); /* Set up system clock */
+    gpio_setup();         /* Configure GPIO pins */
+    adc_setup();          /* Configure ADC1 */
+    dma_setup();          /* Set up DMA for ADC */
+    timer2_setup();       /* Configure Timer2 for periodic ADC conversion */
 
     while (TRUE)
     {
-        __wfi();  /* Wait for interrupt */
     }
 
     return 0;

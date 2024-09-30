@@ -11,13 +11,13 @@
 #include <libopencm3/stm32/timer.h>
 
 /* Constants */
-#define TRUE         1
+#define TRUE 1
 
 /* Pin Definitions */
 #define LED_PORT    GPIOC
-#define LED_PIN     GPIO13  /* PC13 connected to onboard LED */
+#define LED_PIN     GPIO13 /* PC13 connected to onboard LED */
 #define SWITCH_PORT GPIOA
-#define SWITCH_PIN  GPIO0   /* PA0 connected to button (switch) */
+#define SWITCH_PIN  GPIO0 /* PA0 connected to button (switch) */
 
 /* Function Prototypes */
 void system_clock_setup(void);
@@ -59,22 +59,26 @@ void timer2_setup(void)
     /* Enable Timer 2 clock */
     rcc_periph_clock_enable(RCC_TIM2);
 
-    /* Reset Timer 2 peripheral */
-    timer_reset(TIM2);
+    /* Enable TIM2 interrupt. */
+    nvic_enable_irq(NVIC_TIM2_IRQ);
+
+    /* Reset TIM2 peripheral to defaults. */
+    rcc_periph_reset_pulse(RST_TIM2);
 
     /* Timer configuration */
-    timer_set_prescaler(TIM2, 7200 - 1);  // Prescaler for 10 kHz timer clock
-    timer_set_period(TIM2, 0xFFFF);       // Max period
+    timer_set_prescaler(TIM2, 7200 - 1); // Prescaler for 10 kHz timer clock
+    timer_set_period(TIM2, 0xFFFF);      // Max period
 
     /* Configure Timer 2 capture channel 1 on PA0 */
-    timer_ic_set_input(TIM2, TIM_IC1, TIM_IC_IN_TI1);       // Use TI1 as input for capture channel 1
-    timer_ic_set_filter(TIM2, TIM_IC1, TIM_IC_OFF);         // No input filter
-    timer_ic_set_polarity(TIM2, TIM_IC1, TIM_IC_BOTH);      // Capture on both rising and falling edges
-    timer_ic_enable(TIM2, TIM_IC1);                         // Enable input capture for channel 1
+    timer_ic_set_input(TIM2, TIM_IC1, TIM_IC_IN_TI1);     // Use TI1 as input for capture channel 1
+    timer_ic_set_filter(TIM2, TIM_IC1, TIM_IC_OFF);       // No input filter
+    timer_ic_set_polarity(TIM2, TIM_IC1, TIM_IC_RISING);  // Capture on both rising and falling edges
+    timer_ic_set_polarity(TIM2, TIM_IC1, TIM_IC_FALLING); // Capture on both rising and falling edges
+    timer_ic_enable(TIM2, TIM_IC1);                       // Enable input capture for channel 1
 
     /* Enable the timer interrupt for capture events */
     nvic_enable_irq(NVIC_TIM2_IRQ);
-    timer_enable_irq(TIM2, TIM_DIER_CC1IE);  // Enable interrupt on capture event
+    timer_enable_irq(TIM2, TIM_DIER_CC1IE); // Enable interrupt on capture event
 
     /* Start Timer 2 */
     timer_enable_counter(TIM2);
@@ -89,8 +93,8 @@ void tim2_isr(void)
     /* Check if the interrupt was triggered by the capture event */
     if (timer_get_flag(TIM2, TIM_SR_CC1IF))
     {
-        timer_clear_flag(TIM2, TIM_SR_CC1IF);  // Clear the capture event flag
-        toggle_led();                          // Toggle the LED on capture event
+        timer_clear_flag(TIM2, TIM_SR_CC1IF); // Clear the capture event flag
+        toggle_led();                         // Toggle the LED on capture event
     }
 }
 
@@ -108,14 +112,13 @@ void toggle_led(void)
  */
 int main(void)
 {
-    system_clock_setup();  /* Set up system clock */
-    gpio_setup();          /* Configure GPIO pins */
-    timer2_setup();        /* Configure Timer 2 for input capture on PA0 */
+    system_clock_setup(); /* Set up system clock */
+    gpio_setup();         /* Configure GPIO pins */
+    timer2_setup();       /* Configure Timer 2 for input capture on PA0 */
 
     /* Main loop (the program relies on interrupts for operation) */
     while (TRUE)
     {
-        __wfi(); /* Wait for interrupt */
     }
 
     return 0;
