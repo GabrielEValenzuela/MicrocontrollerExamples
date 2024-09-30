@@ -15,11 +15,15 @@ The STM32F103C8T6, part of the STM32F1 series by STMicroelectronics, is a popula
 
 ## 📚 Projects
 
-| 📂 Project Name    | 📝 Description                                                                                                                           |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| [GPIO](GPIO)       | Provides an introduction to GPIO operations, such as configuring pin modes, reading inputs, and controlling outputs.                     |
-| [SYSTICK](SYSTICK) | Covers topics such as configuring the SysTick timer, setting up interrupts, and using the timer for precise timing and delay operations. |
-| [INT](INT)         | This project demonstrates how to utilize the interrupt capabilities of the STM32 microcontroller and priority.                           |
+| 📂 Project Name                 | 📝 Description                                                                                                                            |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| [GPIO](GPIO)                   | Provides an introduction to GPIO operations, such as configuring pin modes, reading inputs, and controlling outputs.                     |
+| [SYSTICK](SYSTICK)             | Covers topics such as configuring the SysTick timer, setting up interrupts, and using the timer for precise timing and delay operations. |
+| [INT](INT)                     | This project demonstrates how to utilize the interrupt capabilities of the STM32 microcontroller and priority.                           |
+| [EINT](EINT)                   | This project demonstrates how to utilize the external interrupt capabilities of the STM32 microcontroller.                               |
+| [TIMER_AND_CAP](TIMER_AND_CAP) | This project demonstrates how to utilize the timer capabilities for delay and capture operations.                                        |
+| [ADC](ADC)                     | This project demonstrates how to utilize the ADC capabilities of the STM32 microcontroller.                                              |
+| [DMA](DMA)                     | This project demonstrates how to utilize the DMA capabilities of the STM32 microcontroller.                                              |
 
 These projects are designed to provide practical examples of working with the STM32F103C8T6 microcontroller, giving you the opportunity to explore and understand its different peripherals and features.
 
