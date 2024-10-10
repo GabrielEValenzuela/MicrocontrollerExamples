@@ -1,0 +1,5 @@
+{
+    "files.associations": {
+        "lpc17xx_timer.h": "c"
+    }
+}

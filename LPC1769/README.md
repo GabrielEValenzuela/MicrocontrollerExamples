@@ -23,7 +23,8 @@ The LPC1769 is a powerful ARM Cortex-M3 based microcontroller developed by NXP. 
 | [TIMER](TIMER)     | This project demonstrates how to configure and use the timer peripherals of the LPC1769 for various timing and counting applications.    |
 | [CAP](CAP)         | This project demonstrates how to configure and use the timer peripherals of the LPC1769 for event capture.                               |
 | [ADC](ADC)         | This project demonstrates how to configure and use the Analog-to-Digital Converter (ADC) of the LPC1769.                                 |
-| [DMA](DMA)         | This project demonstrates how to configure and use the Direct Memory Access (DMA) controller of the LPC1769 for efficient data transfer. |
+| [DMA I](DMA_DAC)         | This project demonstrates how to configure and use the Direct Memory Access (DMA) controller of the LPC1769 for efficient data transfer. M2P |
+| [DMA II](DMA_ADC)         | This project demonstrates how to configure and use the Direct Memory Access (DMA) controller of the LPC1769 for efficient data transfer. P2M |
 
 Each project is designed to showcase a specific feature or peripheral of the LPC1769, providing hands-on experience in embedded systems development.
 
