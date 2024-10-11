@@ -38,6 +38,8 @@
 #define ADC_CHANNEL     ADC_CHANNEL_7 /* Using ADC channel 7 */
 #define DMA_BUFFER_SIZE 16            /* Buffer size for averaging */
 
+#define OUTPUT 1 // GPIO direction for output
+
 /* Global Variables */
 static uint16_t adc_dma_buffer[DMA_BUFFER_SIZE]; /* Buffer to store ADC results */
 static uint32_t adc_avg_value = 0;
