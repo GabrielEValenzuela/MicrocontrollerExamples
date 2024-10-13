@@ -154,6 +154,14 @@ void TIMER0_IRQHandler(void)
     }
 }
 
+/**
+ * @brief Start Timer0.
+ */
+void start_timer(void)
+{
+    TIM_Cmd(LPC_TIM0, ENABLE); /* Start Timer0 */
+}
+
 int main(void)
 {
     SystemInit(); // Initialize system clock
