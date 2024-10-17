@@ -172,7 +172,7 @@ void ADC_IRQHandler()
     adc_read_value = 0;
     for (uint32_t lecture = 0; lecture < 8; ++lecture)
     {
-        while (!(ADC_ChannelGetStatus(LPC_ADC, lecture, ADC_DATA_DONE))); /* Wait for the ADC conversion to finish */
+        while (!(ADC_ChannelGetStatus(LPC_ADC, ADC_CHANNEL_7, ADC_DATA_DONE))); /* Wait for the ADC conversion to finish */
         adc_read_value += ADC_ChannelGetData(LPC_ADC, ADC_CHANNEL_7); /* Read the ADC value */
     }
     adc_read_value /= 8; /* Calculate the average value */
