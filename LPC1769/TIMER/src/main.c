@@ -45,7 +45,7 @@
 
 #include "lpc17xx_gpio.h"   /* GPIO */
 #include "lpc17xx_pinsel.h" /* Pin Configuration */
-#include "lpc17xx_timer.h"  /* Timer0 */
+#include "lpc17xx_timer.h"  /* Timer */
 
 /* Pin Definitions */
 #define LED0 ((uint32_t)(1 << 20)) // P0.20
@@ -53,19 +53,41 @@
 #define LED2 ((uint32_t)(1 << 22)) // P0.22
 #define LED3 ((uint32_t)(1 << 23)) // P0.23
 
-#define FREQ_LED0 2    // LED0 frequency in Hz
-#define FREQ_LED1 1    // LED1 frequency in Hz
-#define FREQ_LED2 0.5  // LED2 frequency in Hz
-#define FREQ_LED3 0.25 // LED3 frequency in Hz
-
 #define HALF_PERIOD                                                                                                    \
     500000 // Half period for toggle, the number 500000 was derived from the assumption of dividing the timer clock by 2
 
 #define OUTPUT 1 // GPIO direction for output
 
+/*
+ * Because all match channels share the same Timer, its difficult to have different frequencies for each LED using just
+ * one Timer. To solve this problem, we can take advantage that all LEDs share a base frequency and use a match counter
+ * to keep track of the number of times the match value has been reached. This way, we can toggle the LEDs at different
+ * frequencies without using multiple timers.
+ *
+ * This isnt the right solution, because it forces us to make all LEDs share a base frequency, in this case, LED0.
+ * The other LEDs will have to toggle at a rate proportional to the base frequency, for example:
+ *
+ * LED1 has half the frequency of LED0
+ * LED2 has half the frequency of LED1
+ * LED3 has half the frequency of LED2.
+ *
+ * The file alternative.c shows a different approach to this problem, giving us more versatility and the ability to
+ * adapt to situations where the frequencies of the different LEDs are not shared or do not mantain a defined
+ * relationship.
+ */
+#define FREQ_LED0 2 // LED0 frequency in Hz -> Match at 25000 (2.5s) -> Toggle each time match is reached
+#define FREQ_LED1 1 // LED1 frequency in Hz -> Match at 50000 (5s) -> Toggle every time the match counter is raised by 2
+#define FREQ_LED2                                                                                                      \
+    0.5 // LED2 frequency in Hz -> Match at 100000 (10s) -> Toggle every time the match counter is raised by 4
+#define FREQ_LED3                                                                                                      \
+    0.25 // LED3 frequency in Hz -> Match at 200000 (20s) -> Toggle every time the match counter is raised by 8
+uint8_t match_counter = 0;
+
 /* Prototype Functions */
 void configure_timer_and_match(void);
 void configure_port(void);
+void start_timer(void);
+void toggle_led(uint32_t led);
 
 void configure_timer_and_match(void)
 {
@@ -83,23 +105,8 @@ void configure_timer_and_match(void)
     match_cfg_struct.IntOnMatch = ENABLE;
     match_cfg_struct.StopOnMatch = DISABLE;
     match_cfg_struct.ResetOnMatch = ENABLE;
-    match_cfg_struct.ExtMatchOutputType = TIM_EXTMATCH_TOGGLE;
+    match_cfg_struct.ExtMatchOutputType = TIM_EXTMATCH_NOTHING;
     match_cfg_struct.MatchValue = (uint32_t)(HALF_PERIOD / FREQ_LED0); // Half period for toggle
-    TIM_ConfigMatch(LPC_TIM0, &match_cfg_struct);
-
-    // Configure match channel for LED1 (1 Hz toggle rate)
-    match_cfg_struct.MatchChannel = 1;
-    match_cfg_struct.MatchValue = (uint32_t)(HALF_PERIOD / FREQ_LED1);
-    TIM_ConfigMatch(LPC_TIM0, &match_cfg_struct);
-
-    // Configure match channel for LED2 (0.5 Hz toggle rate)
-    match_cfg_struct.MatchChannel = 2;
-    match_cfg_struct.MatchValue = (uint32_t)(HALF_PERIOD / FREQ_LED2);
-    TIM_ConfigMatch(LPC_TIM0, &match_cfg_struct);
-
-    // Configure match channel for LED3 (0.25 Hz toggle rate)
-    match_cfg_struct.MatchChannel = 3;
-    match_cfg_struct.MatchValue = (uint32_t)(HALF_PERIOD / FREQ_LED3);
     TIM_ConfigMatch(LPC_TIM0, &match_cfg_struct);
 }
 
@@ -128,29 +135,37 @@ void configure_port(void)
     GPIO_SetDir(PINSEL_PORT_0, LED0 | LED1 | LED2 | LED3, OUTPUT);
 }
 
+void toggle_led(uint32_t led)
+{
+    if (GPIO_ReadValue(PINSEL_PORT_0) & led)
+    {
+        GPIO_ClearValue(PINSEL_PORT_0, led);
+    }
+    else
+    {
+        GPIO_SetValue(PINSEL_PORT_0, led);
+    }
+}
+
 void TIMER0_IRQHandler(void)
 {
-    // Check and clear match interrupt for each channel
-
-    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR0_INT))
+    TIM_ClearIntPending(LPC_TIM0, TIM_MR0_INT);
+    toggle_led(LED0);
+    match_counter++;
+    switch (match_counter)
     {
-        TIM_ClearIntPending(LPC_TIM0, TIM_MR0_INT);
-        GPIO_SetValue(PINSEL_PORT_0, LED0); // Toggle LED0
-    }
-    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR1_INT))
-    {
-        TIM_ClearIntPending(LPC_TIM0, TIM_MR1_INT);
-        GPIO_SetValue(PINSEL_PORT_0, LED1); // Toggle LED1
-    }
-    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR2_INT))
-    {
-        TIM_ClearIntPending(LPC_TIM0, TIM_MR2_INT);
-        GPIO_SetValue(PINSEL_PORT_0, LED2); // Toggle LED2
-    }
-    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR3_INT))
-    {
-        TIM_ClearIntPending(LPC_TIM0, TIM_MR3_INT);
-        GPIO_SetValue(PINSEL_PORT_0, LED3); // Toggle LED3
+        case 2:
+        case 6: toggle_led(LED1); break;
+        case 4:
+            toggle_led(LED1);
+            toggle_led(LED2);
+            break;
+        case 8:
+            toggle_led(LED1);
+            toggle_led(LED2);
+            toggle_led(LED3);
+            match_counter = 0;
+            break;
     }
 }
 
