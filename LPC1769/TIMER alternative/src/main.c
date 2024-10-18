@@ -1,5 +1,5 @@
 /*
- * @file alternative.c
+ * @file main.c
  * @brief Alternative of Timer Example
  *
  * In this case, we take advantage of the toggle configuration for the Match channels of different Timers, instead of
