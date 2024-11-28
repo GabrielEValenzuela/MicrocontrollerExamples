@@ -10,7 +10,7 @@
 Utilizando Systick e interrupciones externas escribir un código en C que cuente indefinidamente de 0 a 9. Un pulsador conectado a Eint0 reiniciará la cuenta a 0 y se mantendrá en ese valor mientras el pulsador se encuentre presionado. Un pulsador conectado a Eint1 permitirá detener o continuar la cuenta cada vez que sea presionado. Un pulsador conectado a Eint2 permitirá modificar la velocidad de incremento del contador. En este sentido, cada vez que se presione ese pulsador el contador pasará a incrementar su cuenta de cada 1 segundo a cada 1 milisegundo y viceversa. Considerar que el microcontrolador se encuentra funcionando con un reloj (cclk) de 16 Mhz. El código debe estar debidamente comentado y los cálculos realizados claramente expresados. En la siguiente figura se muestra una tabla que codifica el display y el esquema del hardware sobre el que funcionará el programa.
 
 <p align="center">
-  <img src="../.img/e2023-ex1.png"/>
+  <img src="../.img/e1-2023-ex1.png"/>
 </p>
 
 <details><summary>Summary</summary>
@@ -39,7 +39,7 @@ Solution
 
 ```c
 /**
-* @file e2023-ex1.c
+* @file e1-2023-ex1.c
 * @brief Solution for the First Problem of the First 2023 Exam from Digital Electronics 3
 * @author Ignacio Ledesma
 * @license MIT
@@ -276,7 +276,7 @@ Considering that:
 
 ```c
 /**
-* @file e2023-ex2.c
+* @file e1-2023-ex2.c
 * @brief Solution for the Second Problem of the First 2023 Exam from Digital Electronics 3
 * @author Ignacio Ledesma
 * @license MIT

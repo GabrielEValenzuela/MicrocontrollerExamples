@@ -36,7 +36,7 @@ Considering that:
 
 ```c
 /**
-* @file e2024-ex1.c
+* @file e1-2024-ex1.c
 * @brief Solution for the First Problem of the First 2024 Exam from Digital Electronics 3
 * @author Ignacio Ledesma
 * @license MIT
@@ -267,7 +267,7 @@ Considering that:
 
 ```c
 /**
-* @file e2024-ex2.c
+* @file e1-2024-ex2.c
 * @brief Solution for the Second Problem of the First 2024 Exam from Digital Electronics 3
 * @author Ignacio Ledesma
 * @license MIT
