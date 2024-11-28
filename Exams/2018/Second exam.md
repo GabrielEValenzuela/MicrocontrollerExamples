@@ -1,8 +1,8 @@
-# Exam 2018 - First
+# Exam 2018 - Second
 
 ## Modules 
 
-- LPC17xx Peripheral Drivers (DAC, Timer, GPIO)
+- LPC17xx Peripheral Drivers (DAC, Timer, GPIO, DMA and UART)
 - Embedded System Programming (Trapezoidal Wave Generation, Memory Transfer with Synchronization)
 
 ## First Problem

@@ -1,9 +1,9 @@
-# Exam 2018 - First
+# Exam 2018 - Retake Second
 
 ## Modules 
 
-- LPC17xx Peripheral Drivers (DAC, Timer, GPIO)
-- Embedded System Programming ()
+- LPC17xx Peripheral Drivers (DAC, ADC, Timer, GPIO, DMA and UART)
+- Embedded System Programming (Real-time interrupt handling, circular buffer implementation, memory-mapped register access and syncronization between peripherals)
 
 ## First Problem
 
