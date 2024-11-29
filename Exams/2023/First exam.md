@@ -16,17 +16,17 @@ Utilizando Systick e interrupciones externas escribir un código en C que cuente
 <details><summary>Summary</summary>
 Design a system to interact with a 7-segment display using three push buttons with the following requirements:
 
-    1. Use the Systick timer to count and display digits on the 7-segment display.
-    2. Button connected to EINT0 (P2.10): Resets the count to 0 and pauses the system until released.
-    3. Button connected to EINT1 (P2.11): Toggles between pause and resume for the count.
-    4. Button connected to EINT2 (P2.12): Switches the counting speed between 1 second per digit and 1 millisecond per digit.
+1. Use the Systick timer to count and display digits on the 7-segment display.
+2. Button connected to EINT0 (P2.10): Resets the count to 0 and pauses the system until released.
+3. Button connected to EINT1 (P2.11): Toggles between pause and resume for the count.
+4. Button connected to EINT2 (P2.12): Switches the counting speed between 1 second per digit and 1 millisecond per digit.
 
 Considering that:
 
-    1. The microcontroller is working at a clock frequency of 16 MHz
-    2. Code should be commented
-    3. Calculations should be justified and written somewhere
-    4. Apply engineering criteria if necessary and suitable (with its corresponding justification)
+1. The microcontroller is working at a clock frequency of 16 MHz
+2. Code should be commented
+3. Calculations should be justified and written somewhere
+4. Apply engineering criteria if necessary and suitable (with its corresponding justification)
 
 </details>
 
@@ -257,18 +257,18 @@ Utilizando interrupciones por GPIO realizar un código en C que permita, mediant
 <details><summary>Summary</summary>
 Create a C program using GPIO interrupts to read a 4-bit number from 4 GPIO pins. The requirements are:
 
-    1. Each change in the 4-bit input triggers a GPIO interrupt to store the value.
-    2. The program maintains an array of the last 10 numbers:
+1. Each change in the 4-bit input triggers a GPIO interrupt to store the value.
+2. The program maintains an array of the last 10 numbers:
     - The most recent number is at position 0.
     - The oldest number is at position 9.
-    3. Interrupt priority starts at the highest level (0) and decreases every 200 numbers until it reaches the lowest level (15).
+3. Interrupt priority starts at the highest level (0) and decreases every 200 numbers until it reaches the lowest level (15).
     - When priority 15 is reached, GPIO interrupts are disabled.
-    4. External pull-up resistors are used for the switches.
+4. External pull-up resistors are used for the switches.
 
 Considering that:
 
-    1. Code should be commented
-    2. Apply engineering criteria if necessary and suitable (with its corresponding justification)
+1. Code should be commented
+2. Apply engineering criteria if necessary and suitable (with its corresponding justification)
 
 </details>
 

@@ -13,22 +13,22 @@ Un estacionamiento automatizado utiliza una barrera que se abre y cierra en func
 
 Design a system to control the barrier of an automated parking lot using the LPC1769. The requirements are:
 
-    1. Use a sensor connected to pin P2.3 to detect when a car arrives or leaves.
-        - Rising edge (car arrival): Turn on a ticket validator connected to P2.4.
-            - If the ticket is valid, activate the barrier motor on P0.15 for a configurable amount of time.
-            - If the ticket is invalid, turn on a red LED connected to P1.5.
-        - Falling edge (car leaves): Turn off the ticket validator and LED. If the barrier was up, lower it after the configured time.
-    2. The time the barrier remains open is configurable using a switch on P3.4.
-        - The configuration is active for 3 seconds at startup, during which the switch is pressed multiple times to set the time.
-        - Time options: 2s, 4s, 6s, or 8s.
-    3. Use SysTick to handle timing.
+1. Use a sensor connected to pin P2.3 to detect when a car arrives or leaves.
+    - Rising edge (car arrival): Turn on a ticket validator connected to P2.4.
+        - If the ticket is valid, activate the barrier motor on P0.15 for a configurable amount of time.
+        - If the ticket is invalid, turn on a red LED connected to P1.5.
+    - Falling edge (car leaves): Turn off the ticket validator and LED. If the barrier was up, lower it after the configured time.
+2. The time the barrier remains open is configurable using a switch on P3.4.
+    - The configuration is active for 3 seconds at startup, during which the switch is pressed multiple times to set the time.
+    - Time options: 2s, 4s, 6s, or 8s.
+3. Use SysTick to handle timing.
 
 Considering that:
 
-    1. The microcontroller is working at a clock frequency of 70 MHz
-    2. Code should be commented
-    3. Calculations should be justified and written somewhere
-    4. Apply engineering criteria if necessary and suitable (with its corresponding justification)
+1. The microcontroller is working at a clock frequency of 70 MHz
+2. Code should be commented
+3. Calculations should be justified and written somewhere
+4. Apply engineering criteria if necessary and suitable (with its corresponding justification)
 
 </details>
 
@@ -245,21 +245,21 @@ En  una  fábrica,  hay  un  sistema  de  alarma  utilizando  una  LPC1769  Rev.
 
 Design an alarm system for a factory using the LPC1769. The system must:
 
-    1. Monitor a door sensor connected to P2.10 (EINT0).
-       - Detects when the door is opened using a rising edge.
-    2. Start a 30-second countdown using SysTick when the door opens.
-    3. Allow the user to input a 4-bit deactivation code using DIP switches connected to P2.0–P2.3.
-       - The correct code is 0xAA (binary: 1010).
-       - The user presses a button on P2.4 (GPIO Interruption) to confirm the input.
-       - The user has 2 attempts to input the correct code.
-    4. If the code is incorrect after 2 attempts or the timer runs out, trigger an alarm by activating a buzzer connected to P1.11.
+1. Monitor a door sensor connected to P2.10 (EINT0).
+   - Detects when the door is opened using a rising edge.
+2. Start a 30-second countdown using SysTick when the door opens.
+3. Allow the user to input a 4-bit deactivation code using DIP switches connected to P2.0–P2.3.
+   - The correct code is 0xAA (binary: 1010).
+   - The user presses a button on P2.4 (GPIO Interruption) to confirm the input.
+   - The user has 2 attempts to input the correct code.
+4. If the code is incorrect after 2 attempts or the timer runs out, trigger an alarm by activating a buzzer connected to P1.11.
 
 Considering that:
 
-    1. The microcontroller is working at a clock frequency of 100 MHz
-    2. Code should be commented
-    3. Calculations should be justified and written somewhere
-    4. Apply engineering criteria if necessary and suitable (with its corresponding justification)
+1. The microcontroller is working at a clock frequency of 100 MHz
+2. Code should be commented
+3. Calculations should be justified and written somewhere
+4. Apply engineering criteria if necessary and suitable (with its corresponding justification)
 
 </details>
 

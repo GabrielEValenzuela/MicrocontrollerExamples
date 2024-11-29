@@ -42,28 +42,27 @@ Se solicita:
   <img src="../.img/r2-2018-ex2.png"/>
 </p>
 
-
 <details><summary>Summary</summary>
 
 This task involves implementing temperature control for an electric oven using the LPC1769 microcontroller, a thermocouple connected to the ADC (Analog-to-Digital Converter), and an optotriac MOC3021 to turn the heating element on and off. 
 
 The requirements are:
 
-    1. Design a circuit to activate the LED of the MOC3021 using a GPIO pin from the LPC1769, considering:
-       - LED forward voltage (Vf): 3.5V
-       - LED current (If): 15mA
-    2. Write a C program to:
-       - Read the oven temperature every second from the thermocouple connected to the ADC.
-        - We use the given voltage/temperature relation of 3.3V = 160ºC
-       - Store the last 100 temperature values in a circular buffer.
-       - Control the heater by:
-         - Turning it off when the temperature exceeds the desired value (stored at memory address **0x10000025**).
-         - Turning it on when the temperature falls below 90% of the desired value.
+1. Design a circuit to activate the LED of the MOC3021 using a GPIO pin from the LPC1769, considering:
+   - LED forward voltage (Vf): 3.5V
+   - LED current (If): 15mA
+2. Write a C program to:
+   - Read the oven temperature every second from the thermocouple connected to the ADC.
+    - We use the given voltage/temperature relation of 3.3V = 160ºC
+   - Store the last 100 temperature values in a circular buffer.
+   - Control the heater by:
+     - Turning it off when the temperature exceeds the desired value (stored at memory address **0x10000025**).
+     - Turning it on when the temperature falls below 90% of the desired value.
 
 Considering that:
 
-    1. Code should be commented
-    2. Apply engineering criteria if necessary and suitable (with its corresponding justification)
+1. Code should be commented
+2. Apply engineering criteria if necessary and suitable (with its corresponding justification)
 
 </details>
 
@@ -254,9 +253,14 @@ Considerando que se tiene un bloque de datos comprendidos entre las posiciones d
 
 This problem involves transferring a block of data from memory address 0x10000800 to 0x10001000 into a new memory area starting at 0x10002800 and ending at 0x10003000. The key requirements are:
 
-    1. Data width is 32 bits (4 bytes).
-    2. The transfer must occur one word at a time, triggered by the Match0 event of Timer1.
-    3. Use DMA (Direct Memory Access) to handle the data transfer efficiently.
+1. Data width is 32 bits (4 bytes).
+2. The transfer must occur one word at a time, triggered by the Match0 event of Timer1.
+3. Use DMA (Direct Memory Access) to handle the data transfer efficiently.
+
+Considering that:
+
+1. Code should be commented
+2. Apply engineering criteria if necessary and suitable (with its corresponding justification)
 
 </details>
 

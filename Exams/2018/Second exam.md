@@ -22,18 +22,18 @@ Utilizando CMSIS escriba y comente un código que genere una onda del tipo trape
 
 Using CMSIS, implement a program that generates a trapezoidal wave on the DAC output of the LPC1769 as shown in the figure. The requirements are:
 
-    1. The DAC output starts at 0, increases in steps of 1 until it reaches a maximum value.
-    2. The maximum value is held for a specific duration, then decreases back to 0 in steps of 1.
-    3. The maximum value, hold time, rise time, and fall time are configured through memory at address 0x10004000:
-       - Bits 0–7: Maximum value for the DAC.
-       - Bits 8–15: Time to hold the maximum value (in milliseconds).
-       - Bits 16–23: Time for each step increment during the rise phase (in milliseconds).
-       - Bits 24–31: Time for each step decrement during the fall phase (in milliseconds).
+1. The DAC output starts at 0, increases in steps of 1 until it reaches a maximum value.
+2. The maximum value is held for a specific duration, then decreases back to 0 in steps of 1.
+3. The maximum value, hold time, rise time, and fall time are configured through memory at address 0x10004000:
+   - Bits 0–7: Maximum value for the DAC.
+   - Bits 8–15: Time to hold the maximum value (in milliseconds).
+   - Bits 16–23: Time for each step increment during the rise phase (in milliseconds).
+   - Bits 24–31: Time for each step decrement during the fall phase (in milliseconds).
 
 Considering that:
 
-    1. Code should be commented
-    2. Apply engineering criteria if necessary and suitable (with its corresponding justification)
+1. Code should be commented
+2. Apply engineering criteria if necessary and suitable (with its corresponding justification)
 
 </details>
 
@@ -201,9 +201,14 @@ Se pide que Enumere y explique los puntos a tener en cuenta para configurar corr
 
 This problem involves transferring a block of data from memory address 0x10000800 to 0x10001000 into a new memory area starting at 0x10002800 and ending at 0x10003000. The key requirements are:
 
-    1. Data width is 16 bits (2 bytes -> default AHB Master endianness configuration).
-    2. The transfer must occur one word at a time, triggered by the Match0 event of Timer1.
-    3. Use DMA (Direct Memory Access) to handle the data transfer efficiently.
+1. Data width is 16 bits (2 bytes -> default AHB Master endianness configuration).
+2. The transfer must occur one word at a time, triggered by the Match0 event of Timer1.
+3. Use DMA (Direct Memory Access) to handle the data transfer efficiently.
+
+Considering that:
+
+1. Code should be commented
+2. Apply engineering criteria if necessary and suitable (with its corresponding justification)
 
 </details>
 

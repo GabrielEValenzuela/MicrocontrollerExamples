@@ -15,15 +15,15 @@ This problem involves digitizing two analog signals and storing their values in 
 
 The requirements are:
 
-    1. Configure the **ADC** to digitize signals from **Channel 2** and **Channel 4**.
-    2. Use **Timer0** to synchronize ADC sampling at a **20 kHz rate** (50 µs intervals).
-    3. Store the last **20 samples** from each channel in separate circular buffers.
-    4. Ensure that all operations are handled via **interrupts** for real-time processing.
+1. Configure the **ADC** to digitize signals from **Channel 2** and **Channel 4**.
+2. Use **Timer0** to synchronize ADC sampling at a **20 kHz rate** (50 µs intervals).
+3. Store the last **20 samples** from each channel in separate circular buffers.
+4. Ensure that all operations are handled via **interrupts** for real-time processing.
 
 Considering that:
 
-    1. Code should be commented
-    2. Apply engineering criteria if necessary and suitable (with its corresponding justification)
+1. Code should be commented
+2. Apply engineering criteria if necessary and suitable (with its corresponding justification)
 
 </details>
 
@@ -194,18 +194,18 @@ Utilizando el timer0, un dac, interrupciones y el driver del LPC1769 , escribir 
 
 This task involves implementing a triangular waveform generator using the LPC1769 microcontroller. The requirements are:
 
-    1. Configure **Timer0** to generate periodic interrupts with a period of 1 µs.
-    2. Update the **DAC output value** in each Timer0 interrupt to create a triangular waveform:
-       - Increment the DAC value linearly until it reaches the maximum.
-       - Decrement the DAC value linearly back to the minimum.
-    3. Use the **DAC** in high-performance mode to achieve the minimum possible period.
-    4. Fully utilize the DAC's 10-bit resolution (0–1023) to maximize signal precision and peak-to-peak voltage.
+1. Configure **Timer0** to generate periodic interrupts with a period of 1 µs.
+2. Update the **DAC output value** in each Timer0 interrupt to create a triangular waveform:
+   - Increment the DAC value linearly until it reaches the maximum.
+   - Decrement the DAC value linearly back to the minimum.
+3. Use the **DAC** in high-performance mode to achieve the minimum possible period.
+4. Fully utilize the DAC's 10-bit resolution (0–1023) to maximize signal precision and peak-to-peak voltage.
 
 Considering that:
 
-    1. The CLK frequency is 100 MHz
-    2. Code should be commented
-    3. Apply engineering criteria if necessary and suitable (with its corresponding justification)
+1. The CLK frequency is 100 MHz
+2. Code should be commented
+3. Apply engineering criteria if necessary and suitable (with its corresponding justification)
 
 </details>
 
