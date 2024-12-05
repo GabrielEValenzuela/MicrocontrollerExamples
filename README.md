@@ -9,7 +9,7 @@ This repository contains a collection of examples and tutorials for working with
 - **LPC1769/**: Contains examples specific to the LPC1769 microcontroller. Each subfolder represents a module.
 - **STM32/**: Contains examples for the STM32F103C8T6 microcontroller. Each subfolder represents a module.
 - **EXAMS/**: Contains exams for the LPC1769 microcontroller. Each subfolder represents a year and exam number.
-- **FINAL_PROJECT/**: Contains the final projects 2024 for the LPC1769 microcontroller.
+- **FINAL_PROJECTS/**: Contains the final projects 2024 for the LPC1769 microcontroller.
 
 ## 📦 Libraries and Frameworks
 
